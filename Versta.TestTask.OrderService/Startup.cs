@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Versta.TestTask.OrderService.Infrastructure.Filters;
 using Versta.TestTask.OrderService.Models;
 using Versta.TestTask.OrderService.Repositories;
 using Versta.TestTask.OrderService.Repositories.Interfaces;
@@ -31,7 +32,7 @@ public class Startup
             .AddCors()
             .AddMvc();
         
-        services.AddControllers();
+        services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
 
         services.AddSwaggerGen(options =>
         {
@@ -47,15 +48,23 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        if (env.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+        else
+        {
+            app.UseHsts();
+        }
+        
 
         app.UseCors(x => x
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyOrigin());
-            //.SetIsOriginAllowed(origin => true)
-            //.AllowCredentials());
+            .SetIsOriginAllowed(origin => true)
+            .AllowCredentials());
+        
         app.UseRouting();
             
         app.UseEndpoints(endpoints =>

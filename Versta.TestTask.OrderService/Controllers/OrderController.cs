@@ -7,7 +7,7 @@ namespace Versta.TestTask.OrderService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class OrderController : ControllerBase // Controller ??
+public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
     private readonly IMapper _mapper;

@@ -103,7 +103,8 @@ const CreateOrder: React.FC = () => {
         
         return first.data.city == second.data.city;
     }
-    
+
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/
     
     return (
         <Paper elevation={3} style={{padding: '20px', margin: '20px', borderRadius: '6px', maxWidth: '350px'}}>
@@ -205,7 +206,7 @@ const CreateOrder: React.FC = () => {
                         onChange={(e) => {
                             setOrder(prevState => ({
                                 ...prevState,
-                                dateOfCargoPickup: new Date(e.target.value)
+                                dateOfCargoPickup: (datePattern.test(e.target.value) ? new Date(e.target.value) : today)
                             }))
                         }}
                         onBlur={() => {
