@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Versta.TestTask.OrderService.Infrastructure.Extensions;
 using Versta.TestTask.OrderService.Models;
 using Versta.TestTask.OrderService.Services.Interfaces;
 
@@ -24,7 +23,16 @@ public class OrderController : ControllerBase // Controller ??
     {
         var orders = await _orderService.GetAllAsync(token);
 
-        return orders.Select(o => o.ToOrderPreview()).ToArray();
+        return orders.Select(o => _mapper.Map<OrderViewModel>(o)).ToArray();
+    }
+
+    [HttpGet("{courseId}")]
+    public async Task<ActionResult<OrderViewModel>> Get(long courseId, CancellationToken token)
+    {
+        var order = await _orderService.GetAsync(courseId, token);
+        var orderView = _mapper.Map<OrderViewModel>(order);
+
+        return Ok(orderView);
     }
 
     [HttpPost("create")]

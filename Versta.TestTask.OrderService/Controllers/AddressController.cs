@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Versta.TestTask.OrderService.Models;
 using Versta.TestTask.OrderService.Services.Interfaces;
 
 namespace Versta.TestTask.OrderService.Controllers;
@@ -15,19 +16,12 @@ public class AddressController : ControllerBase
         _addressService = addressService;
     }
 
-    [HttpGet("getApiToken")]
-    public async Task<ActionResult<string>> GetApiToken(CancellationToken token)
+    [HttpGet("getDaDataParams")]
+    public async Task<ActionResult<DadataParams>> GetDataParams(CancellationToken token)
     {
-        var apiToken = await _addressService.GetApiTokenAsync(token);
+        var dadataParams = await _addressService.GetParamsAsync(token);
 
-        return Ok(apiToken);
+        return Ok(dadataParams);
     }
-
-    [HttpGet("addressSuggestionUrl")]
-    public async Task<ActionResult<string>> GetAddressSuggestionUrl(CancellationToken token)
-    {
-        var url = await _addressService.GetAddressSuggestionUrl(token);
-
-        return Ok(url);
-    }
+    
 }

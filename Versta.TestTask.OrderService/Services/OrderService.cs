@@ -24,6 +24,13 @@ public class OrderService : IOrderService
         return orders;
     }
 
+    public async Task<Order> GetAsync(long id, CancellationToken token)
+    {
+        var order = await _orderRepository.GetAsync(id, token);
+
+        return order;
+    }
+
     public async Task<long> AddAsync(OrderViewModel orderViewModel, CancellationToken token)
     {
         var order = _mapper.Map<Order>(orderViewModel);

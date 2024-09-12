@@ -27,8 +27,11 @@ public class Startup
         {
             options.UseNpgsql(connectionString);
         });
-
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
+            .AddCors()
+            .AddMvc();
+        
+        services.AddControllers();
 
         services.AddSwaggerGen(options =>
         {
@@ -40,29 +43,21 @@ public class Startup
         services.AddScoped<IAddressService, AddressService>();
 
         services.AddHttpClient();
-
-        services.AddControllers();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-
-        // if (env.IsDevelopment())
-        // {
-        //     app.UseDeveloperExceptionPage()
-        //         .UseSwagger()
-        //         .UseSwaggerUI();
-        // }
-        // else
-        // {
-        //     app.UseHsts();
-        // }
-        
         app.UseSwagger();
         app.UseSwaggerUI();
 
+        app.UseCors(x => x
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin());
+            //.SetIsOriginAllowed(origin => true)
+            //.AllowCredentials());
         app.UseRouting();
-
+            
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
